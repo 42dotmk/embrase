@@ -1,0 +1,8 @@
+[package]
+name = "pal"
+version = "0.0.1"
+edition = "2021"
+
+[dependencies]
+hal = { path = "../hal" }
+domain = { path = "../domain" }

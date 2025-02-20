@@ -1,0 +1,9 @@
+[workspace]
+resolver = "2"
+
+members = [
+  "domain",
+  "hal",
+  "pal",
+  "bsp/esp32"
+]
