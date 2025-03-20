@@ -1,0 +1,43 @@
+name: Rebase Fix Branch
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  rebase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Main Branch
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Fetch Latest Changes
+        run: |
+          git fetch origin
+
+      - name: Checkout Fix Branch and Attempt Rebase
+        run: |
+          git checkout fix
+          if git rebase main; then
+            echo "Rebase successful"
+          else
+            echo "Rebase failed due to conflicts"
+            exit 1
+          fi
+
+      - name: Configure Git and Push Rebasing Changes
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        run: |
+          git config --global user.name "Actions Bot [bot]"
+          git config --global user.email "actions-bot@42.mk"
+          git remote set-url origin https://x-access-token:${ACCESS_TOKEN}@github.com/42dotmk/embrase.git
+          git push origin fix --force-with-lease
+
