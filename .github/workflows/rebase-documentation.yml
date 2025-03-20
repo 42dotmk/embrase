@@ -1,0 +1,39 @@
+name: Rebase Documentation Branch
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  rebase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Main Branch
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Fetch Latest Changes
+        run: |
+          git fetch origin
+
+      - name: Checkout Documentation Branch and Attempt Rebase
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          persist-credentials: true
+        run: |
+          git checkout documentation
+          if git rebase main; then
+            echo "Rebase successful"
+          else
+            echo "Rebase failed due to conflicts"
+            exit 1
+          fi
+
+      - name: Push Rebasing Changes
+        run: |
+          git config --global user.name "Actions Bot [bot]"
+          git config --global user.email "actions-bot@42.mk"
+          git push origin documentation --force-with-lease
