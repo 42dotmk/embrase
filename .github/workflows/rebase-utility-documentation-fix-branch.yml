@@ -1,4 +1,4 @@
-name: Rebase Fix Branch
+name: Rebase Utility/Documentation/Fix Branch
 
 on:
   push:
@@ -22,9 +22,9 @@ jobs:
         run: |
           git fetch origin
 
-      - name: Checkout Fix Branch and Attempt Rebase
+      - name: Checkout Target Branch and Attempt Rebase
         run: |
-          git checkout fix
+          git checkout utility-documentation-fix
           if git rebase main; then
             echo "Rebase successful"
           else
@@ -39,5 +39,4 @@ jobs:
           git config --global user.name "Actions Bot [bot]"
           git config --global user.email "actions-bot@42.mk"
           git remote set-url origin https://x-access-token:${ACCESS_TOKEN}@github.com/42dotmk/embrase.git
-          git push origin fix --force-with-lease
-
+          git push origin utility-documentation-fix --force-with-lease
