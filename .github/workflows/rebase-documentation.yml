@@ -22,9 +22,9 @@ jobs:
         run: |
           git fetch origin
 
-      - name: Checkout Documentation Branch and Attempt Rebase
+      - name: Switch Documentation Branch and Attempt Rebase
         run: |
-          git checkout documentation
+          git switch documentation
           if git rebase main; then
             echo "Rebase successful"
           else
